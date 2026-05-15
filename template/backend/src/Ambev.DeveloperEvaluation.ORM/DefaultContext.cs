@@ -1,42 +1,18 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Ambev.DeveloperEvaluation.ORM;
 
-public class DefaultContext : DbContext
+public class DefaultContext(DbContextOptions<DefaultContext> options) : BaseDbContext(options)
 {
-    public DbSet<User> Users { get; set; }
-
-    public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
-    {
-    }
-
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         base.OnModelCreating(modelBuilder);
+        ApplyEntityConfigurations(modelBuilder);
     }
-}
-public class YourDbContextFactory : IDesignTimeDbContextFactory<DefaultContext>
-{
-    public DefaultContext CreateDbContext(string[] args)
+
+    public override void ApplyEntityConfigurations(ModelBuilder modelBuilder)
     {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
-
-        var builder = new DbContextOptionsBuilder<DefaultContext>();
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-        builder.UseNpgsql(
-               connectionString,
-               b => b.MigrationsAssembly("Ambev.DeveloperEvaluation.WebApi")
-        );
-
-        return new DefaultContext(builder.Options);
+        
     }
 }
