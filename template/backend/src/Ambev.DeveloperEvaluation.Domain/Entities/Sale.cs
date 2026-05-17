@@ -40,6 +40,18 @@ public class Sale : BaseEntity
     {
         TotalAmount = Items.Where(i => !i.IsCancelled).Sum(i => i.LineTotal);
     }
+
+    public void ReplaceItems(IEnumerable<SaleItem> newItems)
+    {
+        if (IsCancelled)
+            throw new DomainException("Venda cancelada não pode ser alterada.");
+
+        Items.Clear();
+
+        foreach (var item in newItems)
+            AddItem(item);
+    }
+
     public void Cancel()
     {
         if (IsCancelled) return;
