@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
@@ -10,6 +11,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Auth;
 /// <summary>
 /// Controller for authentication operations
 /// </summary>
+[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : BaseController

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using Ambev.DeveloperEvaluation.WebApi.Common;
@@ -14,6 +15,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Users;
 /// <summary>
 /// Controller for managing user operations
 /// </summary>
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : BaseController
